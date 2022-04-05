@@ -54,11 +54,14 @@ int main(void) {
             .rotation = {0.0f, 0.0f, 0.0f},
             .scale = 1.0f,
     };
+    camera_t camera = camera_new(&display_manager);
 
     while (!glfwWindowShouldClose(display_manager.glfw_window)) {
         entity_increase_position(&entity, (vec3){0.0f, 0.0f, -0.002f});
+        camera_move(&camera);
         renderer_prepare(&renderer);
         shader_program_start(shader);
+        static_shader_load_view_matrix(shader, &camera);
         renderer_render(&renderer, entity, shader);
         shader_program_stop(shader);
         display_manager_update_display(display_manager);

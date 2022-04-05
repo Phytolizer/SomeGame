@@ -5,6 +5,7 @@ const char* const glad_src[] = {
 };
 
 const char* const game_engine_src[] = {
+        "source/entities/camera.c",
         "source/entities/entity.c",
         "source/render_engine/display_manager.c",
         "source/render_engine/loader.c",
