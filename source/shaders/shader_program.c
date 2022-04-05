@@ -93,9 +93,24 @@ GLint shader_program_get_uniform_location(shader_program_t* program, const char*
 }
 
 void shader_program_load_float(shader_program_t* program, GLint location, float value) {
+    (void)program;
     glUniform1f(location, value);
 }
 
-void shader_program_load_vector(shader_program_t* program, GLint location, float value[3]) {
+void shader_program_load_vector(shader_program_t* program, GLint location, vec3 value) {
+    (void)program;
     glUniform3fv(location, 1, value);
+}
+
+void shader_program_load_bool(shader_program_t* program, GLint location, bool value) {
+    float to_load = 0.0f;
+    if (value) {
+        to_load = 1.0f;
+    }
+    shader_program_load_float(program, location, to_load);
+}
+
+void shader_program_load_matrix(shader_program_t* program, GLint location, mat4 value) {
+    (void)program;
+    glUniformMatrix4fv(location, 1, GL_FALSE, value[0]);
 }

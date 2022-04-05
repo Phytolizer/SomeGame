@@ -10,11 +10,12 @@ const char* const game_engine_src[] = {
         "source/render_engine/renderer.c",
         "source/shaders/shader_program.c",
         "source/shaders/static_shader.c",
+        "source/toolbox/math.c",
         "source/stb_image.c",
 };
 #define GAME_ENGINE_CFLAGS \
     "-Wall", "-Wextra", "-Wpedantic", "-std=gnu99", "-Iinclude", "-Iglad/include", \
-            "-Ibuild/include", "-ggdb3"
+            "-Ibuild/include", "-Icglm/include", "-ggdb3"
 
 #define GAME_ENGINE_LIBS "-lglfw", "-lglad", "-lcglm", "-lm"
 #define GAME_ENGINE_LIBS_FMT "vvvv"
@@ -43,6 +44,7 @@ void build_cglm(void) {
 void build_game_engine(void) {
     MKDIRS("build", "obj", "source", "render_engine");
     MKDIRS("build", "obj", "source", "shaders");
+    MKDIRS("build", "obj", "source", "toolbox");
     MKDIRS("build", "include");
 
     CONFIGURE_FILE("config.h.coolbuild_in", "build/include/config.h", "DATA_ROOT_PATH",
