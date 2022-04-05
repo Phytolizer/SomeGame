@@ -16,8 +16,8 @@ const char* const game_engine_src[] = {
     "-Wall", "-Wextra", "-Wpedantic", "-std=gnu99", "-Iinclude", "-Iglad/include", \
             "-Ibuild/include", "-ggdb3"
 
-#define GAME_ENGINE_LIBS "-lglfw"
-#define GAME_ENGINE_LIBS_FMT "v"
+#define GAME_ENGINE_LIBS "-lglfw", "-lglad", "-lcglm", "-lm"
+#define GAME_ENGINE_LIBS_FMT "vvvv"
 
 const char* const game_engine_tester_src[] = {
         "source/engine_tester/main.c",
@@ -33,6 +33,11 @@ void build_glad(void) {
     COMPILE_OBJECTS(glad_src, "-Iglad/include", &glad_obj);
     char** glad_lib = collect_args("vvvp", "ar", "rcs", "build/libglad.a", glad_obj);
     run_cmd(glad_lib);
+}
+
+void build_cglm(void) {
+    CMD("cmake", "-B", "build/cglm", "-S", "cglm", "-DCGLM_SHARED=OFF");
+    CMD("cmake", "--build", "build/cglm");
 }
 
 void build_game_engine(void) {
@@ -55,9 +60,9 @@ void build_game_engine_tester(void) {
 
     const char** game_engine_tester_obj;
     COMPILE_OBJECTS(game_engine_tester_src, GAME_ENGINE_CFLAGS, &game_engine_tester_obj);
-    char** game_engine_tester_link_cmd = collect_args("vpvvvvvvv", cc(), game_engine_tester_obj,
-            "-o", "build/game_engine_tester", "-Lbuild", "-lglfw", "-lgame_engine", "-lglad",
-            "-lm");
+    char** game_engine_tester_link_cmd = collect_args("vpvvvvv" GAME_ENGINE_LIBS_FMT, cc(),
+            game_engine_tester_obj, "-o", "build/game_engine_tester", "-Lbuild", "-Lbuild/cglm",
+            "-lgame_engine", GAME_ENGINE_LIBS);
     run_cmd(game_engine_tester_link_cmd);
 }
 
