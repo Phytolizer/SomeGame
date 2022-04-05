@@ -19,7 +19,7 @@ const char* const game_engine_src[] = {
             "-Ibuild/include", "-Icglm/include", "-ggdb3"
 
 #define GAME_ENGINE_LIBS "-lglfw", "-lglad", "-lcglm", "-lm", "-ldl"
-#define GAME_ENGINE_LIBS_FMT "vvvv"
+#define GAME_ENGINE_LIBS_FMT "vvvvv"
 
 const char* const game_engine_tester_src[] = {
         "source/engine_tester/main.c",
