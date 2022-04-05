@@ -8,8 +8,8 @@
 int main(void) {
     display_manager_t display_manager = display_manager_create_display();
     loader_t loader = loader_new();
-    renderer_t renderer = renderer_new();
     shader_program_t* shader = static_shader_new();
+    renderer_t renderer = renderer_new(&display_manager, shader);
 
     // clang-format off
     float vertices[] = {

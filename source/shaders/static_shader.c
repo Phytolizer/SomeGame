@@ -24,6 +24,11 @@ void static_shader_load_transformation_matrix(shader_program_t* static_shader, m
     shader_program_load_matrix(static_shader, shader->location_transformation_matrix, matrix);
 }
 
+void static_shader_load_projection_matrix(shader_program_t* static_shader, mat4 matrix) {
+    static_shader_t* shader = (static_shader_t*)static_shader;
+    shader_program_load_matrix(static_shader, shader->location_projection_matrix, matrix);
+}
+
 static void bind_attributes(static_shader_t* shader) {
     shader_program_t* base = (shader_program_t*)shader;
     shader_program_bind_attribute(base, 0, "position");
@@ -34,4 +39,6 @@ static void get_all_uniform_locations(static_shader_t* shader) {
     shader_program_t* base = (shader_program_t*)shader;
     shader->location_transformation_matrix =
             shader_program_get_uniform_location(base, "transformationMatrix");
+    shader->location_projection_matrix =
+            shader_program_get_uniform_location(base, "projectionMatrix");
 }

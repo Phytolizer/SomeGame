@@ -17,6 +17,8 @@ static void glfw_error_callback(int error, const char* description) {
 
 display_manager_t display_manager_create_display(void) {
     display_manager_t result;
+    result.width = width;
+    result.height = height;
 
     glfwSetErrorCallback(glfw_error_callback);
 

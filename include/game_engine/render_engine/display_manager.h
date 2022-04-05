@@ -4,6 +4,8 @@
 
 typedef struct {
     GLFWwindow* glfw_window;
+    int width;
+    int height;
 } display_manager_t;
 
 display_manager_t display_manager_create_display(void);

@@ -14,3 +14,7 @@ void create_transformation_matrix(mat4 out, vec3 translation, vec3 rotation, flo
     vec3 v_scale = {scale, scale, scale};
     glm_scale(out, v_scale);
 }
+
+float degrees_to_radians(float degrees) {
+    return degrees * (M_PI / 180.0f);
+}

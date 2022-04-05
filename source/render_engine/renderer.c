@@ -3,9 +3,21 @@
 #include "game_engine/gl.h"
 #include "game_engine/toolbox/math.h"
 
-renderer_t renderer_new(void) {
+#include <string.h>
+
+#define FOV 70
+#define NEAR_PLANE 0.1f
+#define FAR_PLANE 1000.0f
+
+static void create_projection_matrix(renderer_t* renderer);
+
+renderer_t renderer_new(const display_manager_t* display_manager, shader_program_t* shader) {
     renderer_t renderer;
-    renderer.nothing = 0;
+    renderer.display_manager = display_manager;
+    create_projection_matrix(&renderer);
+    shader_program_start(shader);
+    static_shader_load_projection_matrix(shader, renderer.projection_matrix);
+    shader_program_stop(shader);
     return renderer;
 }
 
@@ -32,4 +44,20 @@ void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* sh
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     glBindVertexArray(0);
+}
+
+static void create_projection_matrix(renderer_t* renderer) {
+    float aspect_ratio =
+            (float)renderer->display_manager->width / (float)renderer->display_manager->height;
+    float y_scale = (float)((1.0f - tanf(degrees_to_radians(FOV / 2.0f))) * aspect_ratio);
+    float x_scale = y_scale / aspect_ratio;
+    float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+    glm_mat4_identity(renderer->projection_matrix);
+    renderer->projection_matrix[0][0] = x_scale;
+    renderer->projection_matrix[1][1] = y_scale;
+    renderer->projection_matrix[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+    renderer->projection_matrix[2][3] = -1;
+    renderer->projection_matrix[3][2] = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+    renderer->projection_matrix[3][3] = 0;
 }
