@@ -44,15 +44,22 @@ int main(void) {
     model_texture_t texture = {
             .texture_id = loader_load_texture(&loader, "data/textures/texture.png"),
     };
-    textured_model_t textured_model = {
+    textured_model_t static_model = {
             .raw_model = model,
             .texture = texture,
     };
+    entity_t entity = {
+            .model = static_model,
+            .position = {-1.0f, 0.0f, 0.0f},
+            .rotation = {0.0f, 0.0f, 0.0f},
+            .scale = 1.0f,
+    };
 
     while (!glfwWindowShouldClose(display_manager.glfw_window)) {
+        entity_increase_position(&entity, (vec3){0.0f, 0.0f, -0.002f});
         renderer_prepare(&renderer);
         shader_program_start(shader);
-        renderer_render(&renderer, textured_model);
+        renderer_render(&renderer, entity, shader);
         shader_program_stop(shader);
         display_manager_update_display(display_manager);
     }

@@ -5,6 +5,7 @@ const char* const glad_src[] = {
 };
 
 const char* const game_engine_src[] = {
+        "source/entities/entity.c",
         "source/render_engine/display_manager.c",
         "source/render_engine/loader.c",
         "source/render_engine/renderer.c",
@@ -42,6 +43,7 @@ void build_cglm(void) {
 }
 
 void build_game_engine(void) {
+    MKDIRS("build", "obj", "source", "entities");
     MKDIRS("build", "obj", "source", "render_engine");
     MKDIRS("build", "obj", "source", "shaders");
     MKDIRS("build", "obj", "source", "toolbox");
