@@ -23,8 +23,9 @@ renderer_t renderer_new(const display_manager_t* display_manager, shader_program
 
 void renderer_prepare(renderer_t* renderer) {
     (void)renderer;
+    glEnable(GL_DEPTH_TEST);
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* shader) {

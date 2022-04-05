@@ -99,14 +99,14 @@ int main(void) {
     };
     entity_t entity = {
             .model = static_model,
-            .position = {-1.0f, 0.0f, 0.0f},
+            .position = {0.0f, 0.0f, -5.0f},
             .rotation = {0.0f, 0.0f, 0.0f},
             .scale = 1.0f,
     };
     camera_t camera = camera_new(&display_manager);
 
     while (!glfwWindowShouldClose(display_manager.glfw_window)) {
-        entity_increase_position(&entity, (vec3){0.0f, 0.0f, -0.002f});
+        entity_increase_rotation(&entity, (vec3){1.0f, 1.0f, 0.0});
         camera_move(&camera);
         renderer_prepare(&renderer);
         shader_program_start(shader);
