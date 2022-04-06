@@ -2,6 +2,7 @@
 
 #include "game_engine/gl.h"
 #include "game_engine/toolbox/math.h"
+#include "stb_ds.h"
 
 #include <string.h>
 
@@ -10,10 +11,16 @@
 #define FAR_PLANE 1000.0f
 
 static void create_projection_matrix(renderer_t* renderer);
+static void prepare_textured_model(renderer_t* renderer, textured_model_t model);
+static void unbind_textured_model(textured_model_t model);
+static void prepare_instance(renderer_t* renderer, entity_t entity);
 
 renderer_t renderer_new(const display_manager_t* display_manager, shader_program_t* shader) {
     renderer_t renderer;
+    renderer.shader = shader;
     renderer.display_manager = display_manager;
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     create_projection_matrix(&renderer);
     shader_program_start(shader);
     static_shader_load_projection_matrix(shader, renderer.projection_matrix);
@@ -28,27 +35,18 @@ void renderer_prepare(renderer_t* renderer) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* shader) {
-    (void)renderer;
-    textured_model_t textured_model = entity.model;
-    raw_model_t model = textured_model.raw_model;
-    glBindVertexArray(model.vao_id);
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    mat4 transformation_matrix;
-    create_transformation_matrix(
-            transformation_matrix, entity.position, entity.rotation, entity.scale);
-    static_shader_load_transformation_matrix(shader, transformation_matrix);
-    model_texture_t texture = textured_model.texture;
-    static_shader_load_shine_variables(shader, texture.shine_damper, texture.reflectivity);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textured_model.texture.texture_id);
-    glDrawElements(GL_TRIANGLES, model.vertex_count, GL_UNSIGNED_INT, 0);
-    glDisableVertexAttribArray(2);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
-    glBindVertexArray(0);
+void renderer_render(renderer_t* renderer, entity_map_t* entities) {
+    for (ptrdiff_t i = 0; i < hmlen(entities); i++) {
+        textured_model_t model = entities[i].key;
+        prepare_textured_model(renderer, model);
+        entity_buffer_t batch = hmget(entities, model);
+        for (size_t j = 0; j < batch.length; j++) {
+            entity_t entity = batch.data[j];
+            prepare_instance(renderer, entity);
+            glDrawElements(GL_TRIANGLES, model.raw_model.vertex_count, GL_UNSIGNED_INT, 0);
+        }
+        unbind_textured_model(model);
+    }
 }
 
 static void create_projection_matrix(renderer_t* renderer) {
@@ -65,4 +63,32 @@ static void create_projection_matrix(renderer_t* renderer) {
     renderer->projection_matrix[2][3] = -1;
     renderer->projection_matrix[3][2] = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
     renderer->projection_matrix[3][3] = 0;
+}
+
+static void prepare_textured_model(renderer_t* renderer, textured_model_t model) {
+    raw_model_t raw_model = model.raw_model;
+    glBindVertexArray(raw_model.vao_id);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    model_texture_t texture = model.texture;
+    static_shader_load_shine_variables(
+            renderer->shader, texture.shine_damper, texture.reflectivity);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture.texture_id);
+}
+
+static void unbind_textured_model(textured_model_t model) {
+    (void)model;
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    glBindVertexArray(0);
+}
+
+static void prepare_instance(renderer_t* renderer, entity_t entity) {
+    mat4 transformation_matrix;
+    create_transformation_matrix(
+            transformation_matrix, entity.position, entity.rotation, entity.scale);
+    static_shader_load_transformation_matrix(renderer->shader, transformation_matrix);
 }

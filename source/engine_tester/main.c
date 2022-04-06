@@ -2,6 +2,7 @@
 #include "game_engine/models/textured_model.h"
 #include "game_engine/render_engine/display_manager.h"
 #include "game_engine/render_engine/loader.h"
+#include "game_engine/render_engine/master_renderer.h"
 #include "game_engine/render_engine/obj_loader.h"
 #include "game_engine/render_engine/renderer.h"
 #include "game_engine/shaders/static_shader.h"
@@ -15,7 +16,7 @@ int main(void) {
 
     raw_model_t model = load_obj_model(DATA_ROOT_PATH "/models/dragon.obj", &loader);
     model_texture_t texture =
-            model_texture_new(loader_load_texture(&loader, "data/textures/purple.png"));
+            model_texture_new(loader_load_texture(&loader, DATA_ROOT_PATH "/textures/purple.png"));
     textured_model_t static_model = {
             .raw_model = model,
             .texture = texture,
@@ -34,19 +35,22 @@ int main(void) {
     };
     camera_t camera = camera_new(&display_manager);
 
+    master_renderer_t master_renderer = {
+            .renderer = &renderer,
+            .entities = NULL,
+            .static_shader = shader,
+    };
+
     while (!glfwWindowShouldClose(display_manager.glfw_window)) {
         entity_increase_rotation(&entity, (vec3){0.0f, 1.0f, 0.0});
         camera_move(&camera);
-        renderer_prepare(&renderer);
-        shader_program_start(shader);
-        static_shader_load_light(shader, light);
-        static_shader_load_view_matrix(shader, &camera);
-        renderer_render(&renderer, entity, shader);
-        shader_program_stop(shader);
+        master_renderer_process_entity(&master_renderer, entity);
+        master_renderer_render(&master_renderer, light, camera);
         display_manager_update_display(display_manager);
     }
     shader_program_cleanup(shader);
     free(shader);
+    master_renderer_clean_up(&master_renderer);
     loader_cleanup(&loader);
     display_manager_close_display(display_manager);
 }

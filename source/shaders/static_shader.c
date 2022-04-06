@@ -30,7 +30,7 @@ void static_shader_load_projection_matrix(shader_program_t* static_shader, mat4 
     shader_program_load_matrix(static_shader, shader->location_projection_matrix, matrix);
 }
 
-void static_shader_load_view_matrix(shader_program_t* static_shader, camera_t* camera) {
+void static_shader_load_view_matrix(shader_program_t* static_shader, camera_t camera) {
     mat4 view_matrix;
     create_view_matrix(view_matrix, camera);
     static_shader_t* shader = (static_shader_t*)static_shader;
