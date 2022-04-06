@@ -35,3 +35,7 @@
         (buffer)->data[(buffer)->length] = (value); \
         (buffer)->length++; \
     } while (false)
+
+typedef BUFFER_TYPE(unsigned int) uint_buffer_t;
+typedef BUFFER_TYPE(char) string_buffer_t;
+typedef BUFFER_TYPE(char*) string_array_buffer_t;

@@ -9,10 +9,12 @@ const char* const game_engine_src[] = {
         "source/entities/entity.c",
         "source/render_engine/display_manager.c",
         "source/render_engine/loader.c",
+        "source/render_engine/obj_loader.c",
         "source/render_engine/renderer.c",
         "source/shaders/shader_program.c",
         "source/shaders/static_shader.c",
         "source/toolbox/math.c",
+        "source/toolbox/string.c",
         "source/stb_image.c",
 };
 #define GAME_ENGINE_CFLAGS \
