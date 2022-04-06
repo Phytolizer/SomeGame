@@ -2,12 +2,12 @@
 
 #include "buffer.h"
 #include "game_engine/entities/entity.h"
-#include "game_engine/render_engine/renderer.h"
+#include "game_engine/render_engine/entity_renderer.h"
 #include "game_engine/shaders/shader_program.h"
 
 typedef struct {
     shader_program_t* static_shader;
-    renderer_t* renderer;
+    entity_renderer_t* renderer;
     entity_map_t* entities;
 } master_renderer_t;
 

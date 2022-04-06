@@ -5,11 +5,11 @@
 #include "stb_ds.h"
 
 void master_renderer_render(master_renderer_t* renderer, light_t sun, camera_t camera) {
-    renderer_prepare(renderer->renderer);
+    entity_renderer_prepare(renderer->renderer);
     shader_program_start(renderer->static_shader);
     static_shader_load_light(renderer->static_shader, sun);
     static_shader_load_view_matrix(renderer->static_shader, camera);
-    renderer_render(renderer->renderer, renderer->entities);
+    entity_renderer_render(renderer->renderer, renderer->entities);
     shader_program_stop(renderer->static_shader);
     hmfree(renderer->entities);
 }

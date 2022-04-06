@@ -1,10 +1,10 @@
 #include "config.h"
 #include "game_engine/models/textured_model.h"
 #include "game_engine/render_engine/display_manager.h"
+#include "game_engine/render_engine/entity_renderer.h"
 #include "game_engine/render_engine/loader.h"
 #include "game_engine/render_engine/master_renderer.h"
 #include "game_engine/render_engine/obj_loader.h"
-#include "game_engine/render_engine/renderer.h"
 #include "game_engine/shaders/static_shader.h"
 #include "game_engine/textures/model_texture.h"
 
@@ -12,7 +12,7 @@ int main(void) {
     display_manager_t display_manager = display_manager_create_display();
     loader_t loader = loader_new();
     shader_program_t* shader = static_shader_new();
-    renderer_t renderer = renderer_new(&display_manager, shader);
+    entity_renderer_t renderer = entity_renderer_new(&display_manager, shader);
 
     raw_model_t model = load_obj_model(DATA_ROOT_PATH "/models/dragon.obj", &loader);
     model_texture_t texture =

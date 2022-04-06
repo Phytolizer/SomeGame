@@ -9,8 +9,9 @@ typedef struct {
     const display_manager_t* display_manager;
     mat4 projection_matrix;
     shader_program_t* shader;
-} renderer_t;
+} entity_renderer_t;
 
-renderer_t renderer_new(const display_manager_t* display_manager, shader_program_t* shader);
-void renderer_prepare(renderer_t* renderer);
-void renderer_render(renderer_t* renderer, entity_map_t* entities);
+entity_renderer_t entity_renderer_new(
+        const display_manager_t* display_manager, shader_program_t* shader);
+void entity_renderer_prepare(entity_renderer_t* renderer);
+void entity_renderer_render(entity_renderer_t* renderer, entity_map_t* entities);

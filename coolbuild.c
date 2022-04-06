@@ -11,9 +11,10 @@ const char* const game_engine_src[] = {
         "source/render_engine/loader.c",
         "source/render_engine/master_renderer.c",
         "source/render_engine/obj_loader.c",
-        "source/render_engine/renderer.c",
+        "source/render_engine/entity_renderer.c",
         "source/shaders/shader_program.c",
         "source/shaders/static_shader.c",
+        "source/terrains/terrain.c",
         "source/textures/model_texture.c",
         "source/toolbox/math.c",
         "source/toolbox/string.c",
@@ -44,7 +45,7 @@ void build_glad(void) {
 }
 
 void build_cglm(void) {
-    CMD("cmake", "-B", "build/cglm", "-S", "cglm", "-DCGLM_SHARED=OFF");
+    CMD("cmake", "-B", "build/cglm", "-S", "cglm", "-DCGLM_SHARED=OFF", "-DCMAKE_BUILD_TYPE=Debug");
     CMD("cmake", "--build", "build/cglm");
 }
 
@@ -52,6 +53,7 @@ void build_game_engine(void) {
     MKDIRS("build", "obj", "source", "entities");
     MKDIRS("build", "obj", "source", "render_engine");
     MKDIRS("build", "obj", "source", "shaders");
+    MKDIRS("build", "obj", "source", "terrains");
     MKDIRS("build", "obj", "source", "textures");
     MKDIRS("build", "obj", "source", "toolbox");
     MKDIRS("build", "include");
