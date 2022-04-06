@@ -6,34 +6,17 @@
 
 #include <string.h>
 
-#define FOV 70
-#define NEAR_PLANE 0.1f
-#define FAR_PLANE 1000.0f
-
-static void create_projection_matrix(entity_renderer_t* renderer);
 static void prepare_textured_model(entity_renderer_t* renderer, textured_model_t model);
 static void unbind_textured_model(textured_model_t model);
 static void prepare_instance(entity_renderer_t* renderer, entity_t entity);
 
-entity_renderer_t entity_renderer_new(
-        const display_manager_t* display_manager, shader_program_t* shader) {
+entity_renderer_t entity_renderer_new(shader_program_t* shader, mat4 projection_matrix) {
     entity_renderer_t renderer;
     renderer.shader = shader;
-    renderer.display_manager = display_manager;
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    create_projection_matrix(&renderer);
     shader_program_start(shader);
-    static_shader_load_projection_matrix(shader, renderer.projection_matrix);
+    static_shader_load_projection_matrix(shader, projection_matrix);
     shader_program_stop(shader);
     return renderer;
-}
-
-void entity_renderer_prepare(entity_renderer_t* renderer) {
-    (void)renderer;
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void entity_renderer_render(entity_renderer_t* renderer, entity_map_t* entities) {
@@ -48,22 +31,6 @@ void entity_renderer_render(entity_renderer_t* renderer, entity_map_t* entities)
         }
         unbind_textured_model(model);
     }
-}
-
-static void create_projection_matrix(entity_renderer_t* renderer) {
-    float aspect_ratio =
-            (float)renderer->display_manager->width / (float)renderer->display_manager->height;
-    float y_scale = (float)((1.0f - tanf(degrees_to_radians(FOV / 2.0f))) * aspect_ratio);
-    float x_scale = y_scale / aspect_ratio;
-    float frustum_length = FAR_PLANE - NEAR_PLANE;
-
-    glm_mat4_identity(renderer->projection_matrix);
-    renderer->projection_matrix[0][0] = x_scale;
-    renderer->projection_matrix[1][1] = y_scale;
-    renderer->projection_matrix[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-    renderer->projection_matrix[2][3] = -1;
-    renderer->projection_matrix[3][2] = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-    renderer->projection_matrix[3][3] = 0;
 }
 
 static void prepare_textured_model(entity_renderer_t* renderer, textured_model_t model) {
