@@ -43,6 +43,13 @@ void static_shader_load_light(shader_program_t* static_shader, light_t light) {
     shader_program_load_vector(static_shader, shader->location_light_color, light.color);
 }
 
+void static_shader_load_shine_variables(
+        shader_program_t* static_shader, float shine_damper, float reflectivity) {
+    static_shader_t* shader = (static_shader_t*)static_shader;
+    shader_program_load_float(static_shader, shader->location_shine_damper, shine_damper);
+    shader_program_load_float(static_shader, shader->location_reflectivity, reflectivity);
+}
+
 static void bind_attributes(static_shader_t* shader) {
     shader_program_t* base = (shader_program_t*)shader;
     shader_program_bind_attribute(base, 0, "position");
@@ -59,4 +66,6 @@ static void get_all_uniform_locations(static_shader_t* shader) {
     shader->location_view_matrix = shader_program_get_uniform_location(base, "viewMatrix");
     shader->location_light_position = shader_program_get_uniform_location(base, "lightPosition");
     shader->location_light_color = shader_program_get_uniform_location(base, "lightColor");
+    shader->location_shine_damper = shader_program_get_uniform_location(base, "shineDamper");
+    shader->location_reflectivity = shader_program_get_uniform_location(base, "reflectivity");
 }

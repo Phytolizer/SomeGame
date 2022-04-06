@@ -40,6 +40,8 @@ void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* sh
     create_transformation_matrix(
             transformation_matrix, entity.position, entity.rotation, entity.scale);
     static_shader_load_transformation_matrix(shader, transformation_matrix);
+    model_texture_t texture = textured_model.texture;
+    static_shader_load_shine_variables(shader, texture.shine_damper, texture.reflectivity);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textured_model.texture.texture_id);
     glDrawElements(GL_TRIANGLES, model.vertex_count, GL_UNSIGNED_INT, 0);

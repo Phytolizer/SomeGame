@@ -13,6 +13,7 @@ const char* const game_engine_src[] = {
         "source/render_engine/renderer.c",
         "source/shaders/shader_program.c",
         "source/shaders/static_shader.c",
+        "source/textures/model_texture.c",
         "source/toolbox/math.c",
         "source/toolbox/string.c",
         "source/stb_image.c",
@@ -49,6 +50,7 @@ void build_game_engine(void) {
     MKDIRS("build", "obj", "source", "entities");
     MKDIRS("build", "obj", "source", "render_engine");
     MKDIRS("build", "obj", "source", "shaders");
+    MKDIRS("build", "obj", "source", "textures");
     MKDIRS("build", "obj", "source", "toolbox");
     MKDIRS("build", "include");
 
