@@ -31,6 +31,7 @@ display_manager_t display_manager_create_display(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     result.glfw_window = glfwCreateWindow(width, height, "Game Engine", NULL, NULL);
     if (result.glfw_window == NULL) {
         fprintf(stderr, "Failed to create GLFW window\n");

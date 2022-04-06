@@ -15,7 +15,7 @@ int main(void) {
 
     raw_model_t model = load_obj_model(DATA_ROOT_PATH "/models/dragon.obj", &loader);
     model_texture_t texture = {
-            .texture_id = loader_load_texture(&loader, "data/textures/texture.png"),
+            .texture_id = loader_load_texture(&loader, "data/textures/white.png"),
     };
     textured_model_t static_model = {
             .raw_model = model,
