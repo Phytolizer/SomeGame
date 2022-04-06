@@ -37,10 +37,17 @@ void static_shader_load_view_matrix(shader_program_t* static_shader, camera_t* c
     shader_program_load_matrix(static_shader, shader->location_view_matrix, view_matrix);
 }
 
+void static_shader_load_light(shader_program_t* static_shader, light_t light) {
+    static_shader_t* shader = (static_shader_t*)static_shader;
+    shader_program_load_vector(static_shader, shader->location_light_position, light.position);
+    shader_program_load_vector(static_shader, shader->location_light_color, light.color);
+}
+
 static void bind_attributes(static_shader_t* shader) {
     shader_program_t* base = (shader_program_t*)shader;
     shader_program_bind_attribute(base, 0, "position");
     shader_program_bind_attribute(base, 1, "textureCoords");
+    shader_program_bind_attribute(base, 2, "normal");
 }
 
 static void get_all_uniform_locations(static_shader_t* shader) {
@@ -50,4 +57,6 @@ static void get_all_uniform_locations(static_shader_t* shader) {
     shader->location_projection_matrix =
             shader_program_get_uniform_location(base, "projectionMatrix");
     shader->location_view_matrix = shader_program_get_uniform_location(base, "viewMatrix");
+    shader->location_light_position = shader_program_get_uniform_location(base, "lightPosition");
+    shader->location_light_color = shader_program_get_uniform_location(base, "lightColor");
 }

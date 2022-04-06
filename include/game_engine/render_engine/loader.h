@@ -14,7 +14,7 @@ typedef struct {
 
 loader_t loader_new(void);
 raw_model_t loader_load_to_vao(loader_t* loader, float_span_t positions,
-        float_span_t texture_coordinates, uint_span_t indices);
+        float_span_t texture_coordinates, float_span_t normals, uint_span_t indices);
 GLuint loader_create_vao(loader_t* loader);
 void loader_store_data_in_attribute_list(
         loader_t* loader, GLuint attribute_number, GLint coordinate_size, float_span_t data);

@@ -110,5 +110,5 @@ raw_model_t load_obj_model(const char* file_name, loader_t* loader) {
 
     memcpy(index_array.begin, indices.data, indices.length * sizeof(unsigned int));
 
-    return loader_load_to_vao(loader, vertex_array, texture_array, index_array);
+    return loader_load_to_vao(loader, vertex_array, texture_array, normal_array, index_array);
 }

@@ -35,6 +35,7 @@ void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* sh
     glBindVertexArray(model.vao_id);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
     mat4 transformation_matrix;
     create_transformation_matrix(
             transformation_matrix, entity.position, entity.rotation, entity.scale);
@@ -42,6 +43,7 @@ void renderer_render(renderer_t* renderer, entity_t entity, shader_program_t* sh
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textured_model.texture.texture_id);
     glDrawElements(GL_TRIANGLES, model.vertex_count, GL_UNSIGNED_INT, 0);
+    glDisableVertexAttribArray(2);
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     glBindVertexArray(0);

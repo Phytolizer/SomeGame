@@ -12,11 +12,12 @@ loader_t loader_new(void) {
 }
 
 raw_model_t loader_load_to_vao(loader_t* loader, float_span_t positions,
-        float_span_t texture_coordinates, uint_span_t indices) {
+        float_span_t texture_coordinates, float_span_t normals, uint_span_t indices) {
     GLuint vao_id = loader_create_vao(loader);
     loader_bind_index_buffer(loader, indices);
     loader_store_data_in_attribute_list(loader, 0, 3, positions);
     loader_store_data_in_attribute_list(loader, 1, 2, texture_coordinates);
+    loader_store_data_in_attribute_list(loader, 2, 3, normals);
     loader_unbind_vao(loader);
     return (raw_model_t){
             .vao_id = vao_id,

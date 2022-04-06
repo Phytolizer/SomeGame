@@ -27,6 +27,10 @@ int main(void) {
             .rotation = {0.0f, 0.0f, 0.0f},
             .scale = 1.0f,
     };
+    light_t light = {
+            .position = {0.0f, 0.0f, 20.0f},
+            .color = {1.0f, 1.0f, 1.0f},
+    };
     camera_t camera = camera_new(&display_manager);
 
     while (!glfwWindowShouldClose(display_manager.glfw_window)) {
@@ -34,6 +38,7 @@ int main(void) {
         camera_move(&camera);
         renderer_prepare(&renderer);
         shader_program_start(shader);
+        static_shader_load_light(shader, light);
         static_shader_load_view_matrix(shader, &camera);
         renderer_render(&renderer, entity, shader);
         shader_program_stop(shader);
