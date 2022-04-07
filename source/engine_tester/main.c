@@ -36,7 +36,6 @@ int main(void) {
     terrain_t terrain2 = terrain_new(1.0f, 0.0f, &loader,
             model_texture_new(loader_load_texture(&loader, DATA_ROOT_PATH "/textures/grass.png")));
     camera_t camera = camera_new(&display_manager);
-    camera.position[1] = 10.0f;
 
     master_renderer_t master_renderer = master_renderer_new(&display_manager);
 
