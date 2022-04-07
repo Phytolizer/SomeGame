@@ -25,7 +25,7 @@ const char* const game_engine_src[] = {
 };
 #define GAME_ENGINE_CFLAGS \
     "-Wall", "-Wextra", "-Wpedantic", "-std=gnu99", "-Iinclude", "-Iglad/include", \
-            "-Ibuild/include", "-Icglm/include", "-ggdb3"
+            "-Ibuild/include", "-Icglm/include", "-ggdb3", "-DSTBDS_NO_SHORT_NAMES"
 
 #define GAME_ENGINE_LIBS "-lglfw", "-lglad", "-lcglm", "-lm", "-ldl"
 #define GAME_ENGINE_LIBS_FMT "vvvvv"

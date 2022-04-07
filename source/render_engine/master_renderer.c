@@ -42,18 +42,18 @@ void master_renderer_render(master_renderer_t* renderer, light_t sun, camera_t c
     terrain_renderer_render(
             &renderer->terrain_renderer, (terrain_span_t)BUFFER_AS_SPAN(renderer->terrains));
     shader_program_stop(renderer->terrain_shader);
-    hmfree(renderer->entities);
+    stbds_hmfree(renderer->entities);
 }
 
 void master_renderer_process_entity(master_renderer_t* renderer, entity_t entity) {
     textured_model_t entity_model = entity.model;
-    entity_map_t* entry = hmgetp_null(renderer->entities, entity_model);
+    entity_map_t* entry = stbds_hmgetp_null(renderer->entities, entity_model);
     if (entry != NULL) {
         BUFFER_PUSH(&entry->value, entity);
     } else {
         entity_buffer_t new_batch = BUFFER_INIT;
         BUFFER_PUSH(&new_batch, entity);
-        hmput(renderer->entities, entity_model, new_batch);
+        stbds_hmput(renderer->entities, entity_model, new_batch);
     }
 }
 

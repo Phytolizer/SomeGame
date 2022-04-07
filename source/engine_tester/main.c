@@ -7,8 +7,12 @@
 #include "game_engine/render_engine/obj_loader.h"
 #include "game_engine/shaders/static_shader.h"
 #include "game_engine/textures/model_texture.h"
+#include "stb_ds.h"
+
+#include <time.h>
 
 int main(void) {
+    stbds_rand_seed(time(NULL));
     display_manager_t display_manager = display_manager_create_display();
     loader_t loader = loader_new();
 
