@@ -30,12 +30,6 @@ raw_model_t load_obj_model(const char* file_name, loader_t* loader) {
     size_t line_cap = 0;
     ssize_t line_len;
     while ((line_len = getline(&line, &line_cap, fp)) != -1) {
-        char* token_buffer = strdup(line);
-        string_array_buffer_t tokens = BUFFER_INIT;
-        for (char* token = strtok(token_buffer, " \t\r\n"); token != NULL;
-                token = strtok(NULL, " \t\r\n")) {
-            BUFFER_PUSH(&tokens, token);
-        }
         if (string_starts_with(line, "v ")) {
             vec3 vertex;
             sscanf(line, "v %f %f %f", &vertex[0], &vertex[1], &vertex[2]);
@@ -92,6 +86,9 @@ raw_model_t load_obj_model(const char* file_name, loader_t* loader) {
             normal_array.begin[vertex_index * 3 + 2] = current_normal[2];
         }
     }
+    free(line);
+    free(normals.data);
+    free(textures.data);
 
     vertex_array.length = vertices.length * 3;
     vertex_array.begin = malloc(vertex_array.length * sizeof(float));
@@ -107,8 +104,16 @@ raw_model_t load_obj_model(const char* file_name, loader_t* loader) {
         vertex_array.begin[vertex_pointer] = vertices.data[i][2];
         vertex_pointer++;
     }
+    free(vertices.data);
 
     memcpy(index_array.begin, indices.data, indices.length * sizeof(unsigned int));
+    free(indices.data);
 
-    return loader_load_to_vao(loader, vertex_array, texture_array, normal_array, index_array);
+    raw_model_t result =
+            loader_load_to_vao(loader, vertex_array, texture_array, normal_array, index_array);
+    free(vertex_array.begin);
+    free(texture_array.begin);
+    free(normal_array.begin);
+    free(index_array.begin);
+    return result;
 }

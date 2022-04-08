@@ -23,13 +23,14 @@ void entity_renderer_render(entity_renderer_t* renderer, entity_map_t* entities)
     for (ptrdiff_t i = 0; i < stbds_hmlen(entities); i++) {
         textured_model_t model = entities[i].key;
         prepare_textured_model(renderer, model);
-        entity_buffer_t batch = stbds_hmget(entities, model);
+        entity_buffer_t batch = entities[i].value;
         for (size_t j = 0; j < batch.length; j++) {
             entity_t entity = batch.data[j];
             prepare_instance(renderer, entity);
             glDrawElements(GL_TRIANGLES, model.raw_model.vertex_count, GL_UNSIGNED_INT, 0);
         }
         unbind_textured_model(model);
+        free(entities[i].value.data);
     }
 }
 

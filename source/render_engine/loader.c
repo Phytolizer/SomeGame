@@ -95,4 +95,5 @@ void loader_cleanup(loader_t* loader) {
     }
     free(loader->vaos.data);
     free(loader->vbos.data);
+    free(loader->textures.data);
 }

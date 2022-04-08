@@ -54,8 +54,14 @@ static raw_model_t generate_terrain(loader_t* loader) {
             indices[pointer++] = bottom_right;
         }
     }
-    return loader_load_to_vao(loader, (float_span_t)SPAN_WITH_LENGTH(vertices, vertex_count),
-            (float_span_t)SPAN_WITH_LENGTH(normals, normal_count),
-            (float_span_t)SPAN_WITH_LENGTH(texture_coordinates, texcoord_count),
-            (uint_span_t)SPAN_WITH_LENGTH(indices, index_count));
+    raw_model_t result =
+            loader_load_to_vao(loader, (float_span_t)SPAN_WITH_LENGTH(vertices, vertex_count),
+                    (float_span_t)SPAN_WITH_LENGTH(normals, normal_count),
+                    (float_span_t)SPAN_WITH_LENGTH(texture_coordinates, texcoord_count),
+                    (uint_span_t)SPAN_WITH_LENGTH(indices, index_count));
+    free(vertices);
+    free(normals);
+    free(texture_coordinates);
+    free(indices);
+    return result;
 }

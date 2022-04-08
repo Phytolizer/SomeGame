@@ -48,7 +48,7 @@ static void unbind_textured_model(void) {
 
 static void load_model_matrix(terrain_renderer_t* renderer, terrain_t terrain) {
     mat4 transformation_matrix;
-    create_transformation_matrix(
-            transformation_matrix, (vec3){terrain.x, 0.0f, terrain.z}, (vec3){0}, 1.0f);
+    create_transformation_matrix(transformation_matrix, (vec3){terrain.x, 0.0f, terrain.z},
+            (vec3){0.0f, 0.0f, 0.0f}, 1.0f);
     terrain_shader_load_transformation_matrix(renderer->shader, transformation_matrix);
 }

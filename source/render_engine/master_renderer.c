@@ -35,6 +35,7 @@ void master_renderer_render(master_renderer_t* renderer, light_t sun, camera_t c
     static_shader_load_light(renderer->static_shader, sun);
     static_shader_load_view_matrix(renderer->static_shader, camera);
     entity_renderer_render(&renderer->entity_renderer, renderer->entities);
+    stbds_hmfree(renderer->entities);
     shader_program_stop(renderer->static_shader);
     shader_program_start(renderer->terrain_shader);
     terrain_shader_load_light(renderer->terrain_shader, sun);
@@ -69,6 +70,7 @@ void master_renderer_prepare(master_renderer_t* renderer) {
 }
 
 void master_renderer_clean_up(master_renderer_t* renderer) {
+    free(renderer->terrains.data);
     shader_program_cleanup(renderer->static_shader);
     free(renderer->static_shader);
     shader_program_cleanup(renderer->terrain_shader);
