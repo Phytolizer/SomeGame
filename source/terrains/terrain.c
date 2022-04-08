@@ -28,14 +28,14 @@ static raw_model_t generate_terrain(loader_t* loader) {
     size_t vertex_pointer = 0;
     for (size_t i = 0; i < VERTEX_COUNT; i++) {
         for (size_t j = 0; j < VERTEX_COUNT; j++) {
-            vertices[vertex_pointer * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
+            vertices[vertex_pointer * 3] = (float)j / ((float)VERTEX_COUNT - 1.0f) * SIZE;
             vertices[vertex_pointer * 3 + 1] = 0.0f;
-            vertices[vertex_pointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
+            vertices[vertex_pointer * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1.0f) * SIZE;
             normals[vertex_pointer * 3] = 0.0f;
             normals[vertex_pointer * 3 + 1] = 1.0f;
             normals[vertex_pointer * 3 + 2] = 0.0f;
-            texture_coordinates[vertex_pointer * 2] = (float)j / ((float)VERTEX_COUNT - 1);
-            texture_coordinates[vertex_pointer * 2 + 1] = (float)i / ((float)VERTEX_COUNT - 1);
+            texture_coordinates[vertex_pointer * 2] = (float)j / ((float)VERTEX_COUNT - 1.0f);
+            texture_coordinates[vertex_pointer * 2 + 1] = (float)i / ((float)VERTEX_COUNT - 1.0f);
             vertex_pointer++;
         }
     }

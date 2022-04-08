@@ -37,9 +37,13 @@ int main(void) {
     };
     terrain_t terrain = terrain_new(0.0f, 0.0f, &loader,
             model_texture_new(loader_load_texture(&loader, DATA_ROOT_PATH "/textures/grass.png")));
-    terrain_t terrain2 = terrain_new(1.0f, 0.0f, &loader,
+    terrain_t terrain2 = terrain_new(-1.0f, 0.0f, &loader,
             model_texture_new(loader_load_texture(&loader, DATA_ROOT_PATH "/textures/grass.png")));
     camera_t camera = camera_new(&display_manager);
+    camera.position[0] = -5.0f;
+    camera.position[1] = 10.0f;
+    camera.position[2] = -5.0f;
+    camera.pitch = 90.0f;
 
     master_renderer_t master_renderer = master_renderer_new(&display_manager);
 
